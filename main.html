@@ -53,15 +53,11 @@ let bandNamesWithoutArticles = bandNames.map(name => name.replace(/^(a|an|the)\s
 let sortedBandNames = bandNamesWithoutArticles.sort();
 
 // Create HTML list
-cy.get("#band").then(ulElement => {
+cy.get("#band").should("exist").within(() => {
   sortedBandNames.forEach(name => {
-    cy.wrap(ulElement)
-      .find("li")
-      .should("not.contain", name); // Ensure the element is not already present
-    cy.wrap(ulElement)
-      .append(`<li>${name}</li>`)
-      .find("li:last")
-      .should("have.text", name); // Ensure the element is added with the correct text
+    cy.get("li").should("not.contain", name); // Ensure the element is not already present
+    cy.get("ul").append(`<li>${name}</li>`);
+    cy.get("li:last").should("have.text", name); // Ensure the element is added with the correct text
   });
 });
 
